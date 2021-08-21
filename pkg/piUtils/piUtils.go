@@ -1,12 +1,11 @@
 package piUtils
 
 import (
-	"bufio"
 	"fmt"
 	"os/exec"
 )
 
-func SendSignalToGPIO(state int) {
+func SendSignalToGPIO(state string) {
 	fmt.Println("Pi should turn on LED soon...")
 	LED := "7"
 	gpioState := state
@@ -17,5 +16,7 @@ func SendSignalToGPIO(state int) {
 
 	if err != nil {
 		fmt.Println(err)
+	} else {
+		fmt.Println(string(testOut))
 	}
 }

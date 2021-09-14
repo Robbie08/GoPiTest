@@ -2,21 +2,45 @@ package piUtils
 
 import (
 	"fmt"
-	"os/exec"
+	"github.com/stianeikeland/go-rpio"
+	"os"
+	"time"
 )
 
-func SendSignalToGPIO(state string) {
+func TurnLedOn(p int) {
 	fmt.Println("Pi should turn on LED soon...")
-	LED := "7"
-	gpioState := state
+	pin := rpio.Pin(p)
 
-	// Write to GPIO pin 7
-	testCmd := exec.Command("gpio", "write", LED, gpioState)
-	testOut, err := testCmd.Output()
-
-	if err != nil {
+	if err := rpio.Open(); err != nil {
 		fmt.Println(err)
-	} else {
-		fmt.Println(string(testOut))
+		os.Exit(1)
+	}
+
+	defer rpio.Close()
+
+	pin.Output()
+
+	for i := 0; i < 20; i++ {
+		pin.Toggle()
+		time.Sleep(time.Second)
+	}
+}
+
+func TurnLedOff(p int) {
+	fmt.Println("Pi should turn off LED soon...")
+	pin := rpio.Pin(p)
+
+	if err := rpio.Open(); err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	defer rpio.Close()
+
+	pin.Output()
+
+	for i := 0; i < 20; i++ {
+		pin.Toggle()
+		time.Sleep(time.Second * 4)
 	}
 }

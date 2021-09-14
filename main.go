@@ -11,7 +11,7 @@ import (
 func main() {
 	log.SetFormatter(&log.JSONFormatter{})
 	log.Info("Starting server...")
-    http.HandleFunc("/", defaultPage)
+	http.HandleFunc("/", defaultPage)
 	http.HandleFunc("/on", onState)
 	http.HandleFunc("/off", offState)
 	http.HandleFunc("/shutdown", shutdown)
@@ -34,11 +34,11 @@ func shutdown(w http.ResponseWriter, r *http.Request) {
 func onState(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "piInterface.html")
 	fmt.Println("State: ON")
-	piUtils.SendSignalToGPIO("1")
+	piUtils.TurnLedOn(18)
 }
 
 func offState(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "piInterface.html")
 	fmt.Println("State: OFF")
-	piUtils.SendSignalToGPIO("0")
+	piUtils.TurnLedOff(18)
 }
